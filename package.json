@@ -1,0 +1,39 @@
+{
+  "name": "fluxstore",
+  "version": "0.0.1",
+  "description": "Yet another flux store",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha && jshint index.js test.js",
+    "dist": "browserify -s 'FluxStore' index.js > dist/fluxstore.js",
+    "docs": "jsdox --output docs index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pwlmaciejewski/fluxstore.git"
+  },
+  "keywords": [
+    "flux",
+    "react",
+    "store"
+  ],
+  "author": "Paweł Maciejewski <fragphace@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pwlmaciejewski/fluxstore/issues"
+  },
+  "homepage": "https://github.com/pwlmaciejewski/fluxstore#readme",
+  "devDependencies": {
+    "browserify": "^11.0.1",
+    "chai": "^3.2.0",
+    "flux": "^2.0.3",
+    "jsdox": "^0.4.9",
+    "jshint": "^2.8.0",
+    "mocha": "^2.2.5",
+    "sinon": "^1.15.4"
+  },
+  "dependencies": {
+    "clone": "^1.0.2",
+    "microevent": "^1.0.0"
+  }
+}
