@@ -1,0 +1,27 @@
+{
+  "name": "fluxstore",
+  "main": "dist/fluxstore.js",
+  "version": "0.0.1",
+  "homepage": "https://github.com/pwlmaciejewski/fluxstore",
+  "authors": [
+    "Paweł Maciejewski <pwlmaciejewski@gmail.com>"
+  ],
+  "description": "Yet another flux store",
+  "moduleType": [
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "flux",
+    "react",
+    "store"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
