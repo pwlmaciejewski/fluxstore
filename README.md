@@ -18,7 +18,8 @@ bower install fluxstore
 ## Usage
 
 ```javascript
-var FluxStore = require('fluxstore'); // Node.js. For browser script tag: include file from the dist/ folder.
+var FluxStore = require('fluxstore'); // Node.js. 
+// For browser script tag: include the file from the dist/ folder.
 
 // Init FluxStore with the dispatcher. It returns Store constructor.
 var dispatcher = new require('flux').Dispatcher();
