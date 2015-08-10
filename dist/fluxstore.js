@@ -1,8 +1,19 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.FluxStoreInit = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.FluxStore = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/**
+ * FluxStore
+ * @overview Yet another flux store
+ * @author Paweł Maciejewski <fragphace@gmail.com>
+ */
+
 var MicroEvent = require('microevent');
 var clone = require('clone');
 
 function init(dispatcher) {
+  /**
+  * Constructor
+  * @constructor
+  * @param {Object} initialState - (optional) Store's initial state
+  */
   function Store(initialState) {
     initialState = initialState || {};
     this.dispatcher = dispatcher;
@@ -21,14 +32,29 @@ function init(dispatcher) {
     this.trigger('change');
   };
 
+  /**
+  * setState
+  * @description Set current state.
+  * @param {Object} state - new state.
+  * @example new Store().setState({ foo: 'bar' }).getState().foo // 'bar'
+  */
   Store.prototype.setState = function(state) {
     this.state = Store.deepCopy(state);
   };
 
-  Store.prototype.getState = function(state) {
+  /**
+  * setState
+  * @description Returns a deep copy of the current state.
+  * @example new Store({ foo: 'bar' }).getState().foo // 'bar'
+  */
+  Store.prototype.getState = function() {
     return Store.deepCopy(this.state);
   };
 
+  /**
+  * getToken
+  * @description Returns a dispatcher token - used in `dispatcher.waitFor`.
+  */
   Store.prototype.getToken = function() {
     return this.token;
   };
@@ -37,24 +63,55 @@ function init(dispatcher) {
     return clone(obj);
   };
 
+  /**
+  * getInitialState
+  * @description Returns an initial state of the store.
+  */
   Store.prototype.getInitialState = function() {
     return this.initialState;
   };
 
+  /**
+  * reset
+  * @description Resets the store to the initial state.
+  */
   Store.prototype.reset = function() {
     this.setState(this.getInitialState());
   };
 
-  Store.prototype.reducer = function(key, reducer) {
-    this.reducers[key] = reducer;
+  /**
+  * reducer
+  * @param {String} actionName - Action that will trigger the reducer.
+  * @param {Function} reducer - Reducer function.
+  * @description Adds a reducer function. Reducer is a function that will be invoked on specified action.
+  * It's always invoked with the current state of the store and the action that triggered it.
+  * If you return a non-falsy value from the reducer it will be treated as a new state.
+  * This will cause in state change and triggering a change event.
+  */
+  Store.prototype.reducer = function(actionName, reducer) {
+    this.reducers[actionName] = reducer;
   };
 
+  /**
+  * method
+  * @param {String} key - Method name
+  * @param {Function} fn - Function.
+  * @description Adds a instance method to the store.
+  */
   Store.prototype.method = function(key, fn) {
     this[key] = fn;
   };
 
   MicroEvent.mixin(Store);
 
+  /**
+  * Store.create
+  * @param {Object} initialState - Initial state of the store
+  * @param {Object} reducers - Object with reducers.
+  * @param {Object} methods - Object with instance methods.
+  * @description Helper method to create a new store with initial state, reducers
+  * and instance methods with one call.
+  */
   Store.create = function (initialState, reducers, methods) {
     var store = new Store(initialState);
 
@@ -77,21 +134,6 @@ function init(dispatcher) {
 }
 
 module.exports = init;
-
-// // Node.js
-// if (typeof module !== 'undefined' && module.exports) {
-//   module.exports = init;
-// }
-// // AMD / RequireJS
-// else if (typeof define !== 'undefined' && define.amd) {
-//   define([], function () {
-//       return init;
-//   });
-// }
-// // included directly via <script> tag
-// else {
-//   window.FluxStoreInit = init;
-// }
 
 },{"clone":6,"microevent":7}],2:[function(require,module,exports){
 /*!
